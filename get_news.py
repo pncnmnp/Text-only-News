@@ -44,3 +44,18 @@ class ParseNews():
 
 		conn.commit()
 		conn.close()
+
+	def fetch_news(self):
+		conn = sqlite3.connect(DB_PATH)
+		c = conn.cursor()
+		news_list = c.execute("""SELECT title, link, published, summary FROM News""").fetchall()
+		news_json = dict()
+
+		for news in news_list:
+			news_json[news[0]] = dict()
+			news_json[news[0]]['url'] = news[1]
+			news_json[news[0]]['published'] = news[2]
+			news_json[news[0]]['summary'] = news[3]
+
+		conn.close()
+		return news_json

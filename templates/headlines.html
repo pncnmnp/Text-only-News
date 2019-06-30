@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" content="parth_parikh">
+		<meta name="description" content="A text-only news website for low internet bandwith">
+		<title>Headlines</title>
+	</head>
+
+	<body>
+		<ul>
+			{% for title in titles %}
+				<li><a href="/summary?title={{ title }}">{{ title }}</a></li>
+			{% endfor %}
+		</ul>
+	</body>
+</html>
