@@ -2,6 +2,7 @@ from newspaper import Article
 import feedparser
 import json
 import sqlite3
+from rm_old_news import rm_news
 
 NEWS_URLS_PATH = './data/urls.json'
 DB_PATH = './data/news.sqlite3'
@@ -62,5 +63,6 @@ class ParseNews():
 
 if __name__ == '__main__':
 	parse = ParseNews()
+	rm_news(DB_PATH)
 	parse.get_news()
 	parse.store_news()

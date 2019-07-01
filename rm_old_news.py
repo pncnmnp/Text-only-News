@@ -1,7 +1,6 @@
 import sqlite3
-from get_news import DB_PATH
 
-def rm_news():
+def rm_news(DB_PATH):
 	conn = sqlite3.connect(DB_PATH)
 	c = conn.cursor()
 	news_list = c.execute("""SELECT title, link, published, summary FROM News""").fetchall()
@@ -13,4 +12,5 @@ def rm_news():
 	conn.close()
 
 if __name__ == "__main__":
-	rm_news()
+	from get_news import DB_PATH
+	rm_news(DB_PATH)
