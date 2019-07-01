@@ -30,6 +30,7 @@ a:hover {
 
 ul {
 	list-style: circle;
+	padding-right: 10px;
 }
 
 .go_back a {
@@ -39,9 +40,21 @@ ul {
 .disclaimer {
 	font-size: 12px;
 	background-color: #F5F5F5;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.disclaimer a {
+	text-decoration: underline;
 }
 
 .error_para {
 	font-weight: bold;
 	text-align: center;
+}
+
+.summary {
+	padding-left: 10px;
+	padding-right: 10px;
+	overflow-wrap: break-word;
 }

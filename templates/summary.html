@@ -12,13 +12,15 @@
 
 	<body>
 		<h1>{{ title }}</h1>
-		<p><b>{{ published }}</b></p>
-		<p class="go_back"><a href="/">Go to Homepage</a></p>
-		{% for line in summary %}
-			<p>{{ line }}</p>
-		{% endfor %}
-		<p>To read more visit: <a href='{{ link }}'>{{ link }}</a></p>
-		<p class="go_back"><a href="/">Go to Homepage</a></p>
-		<p class="disclaimer">The news is rendered from <a href="{{ ''.join(['https://', site_name]) }}">{{ site_name }}</a>. This site is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. While the site design is licensed under MIT License, the news content is a copyright property of <a href="{{ ''.join(['https://', site_name]) }}">{{ site_name }}</a>.</p>
+		<div class="summary">
+			<p><b>{{ published }}</b></p>
+			<p class="go_back"><a href="/">Go to Homepage</a></p>
+			{% for line in summary %}
+				<p>{{ line }}</p>
+			{% endfor %}
+			<p><b>To read more visit:</b> <a href='{{ link }}'>{{ link }}</a></p>
+			<p class="go_back"><a href="/">Go to Homepage</a></p>
+		</div>	
+		<p class="disclaimer">The news is rendered from <a href="{{ ''.join(['https://', site_name]) }}">{{ site_name }}</a>. This site is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. While the site design is licensed under MIT License, the news content is a copyright property of <a href="{{ ''.join(['https://', site_name]) }}">{{ site_name }}</a>. The code for the site is available on <a href="https://github.com/pncnmnp/Text-only-News">Github</a>. Created by <b>Parth Parikh</b></p>
 	</body>
 </html>
