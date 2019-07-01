@@ -16,10 +16,26 @@ def display_headlines():
 def display_summary():
 	title = request.args['title']
 	news = parsed.fetch_news()
-	site_name = urlparse(news[title]['url']).hostname.replace('feeds.', '')
-	return render_template('summary.html', 
+	exception = str()
+	try:
+		site_name = urlparse(news[title]['url']).hostname.replace('feeds.', '')
+		return render_template('summary.html', 
 							title=title, 
 							summary=news[title]['summary'].split('\n'),
 							link=news[title]['url'],
 							published=news[title]['published'],
 							site_name=site_name)
+	except:
+		exception = 'The summary for the following title does not exist!'
+		return render_template('error.html',
+								exception=exception)
+
+@app.errorhandler(404)
+def page_not_found(error):
+	exception = 'Error 404: The page does not exist!'
+	return render_template('error.html', exception=exception), 404
+
+@app.errorhandler(500)
+def internal_server(error):
+	exception = 'Error 500: There is a problem with our server. Please try again!'
+	return render_template('error.html', exception=exception), 500

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" content="parth_parikh">
+		<meta name="description" content="A text-only news website for low internet bandwith">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_styles.css') }}" />
+		<title>{{ exception }}</title>
+	</head>
+
+	<body>
+		<h1>Looks like something's wrong!</h1>
+		<p class="error_para">{{ exception }}</p>
+		<p class="error_para"><a href="/">Go to Homepage</a></p>
+		<p class="disclaimer">The news is rendered using RSS feeds provided by <a href="https://in.reuters.com/tools/rss">Reuters</a> and <a href="https://www.ndtv.com/rss">NDTV</a>. This site is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. While the site design is licensed under MIT License, the news content is a copyright property of the respective news platform.</p>
+	</body>
+</html>

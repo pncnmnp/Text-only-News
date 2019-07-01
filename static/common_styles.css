@@ -40,3 +40,8 @@ ul {
 	font-size: 12px;
 	background-color: #F5F5F5;
 }
+
+.error_para {
+	font-weight: bold;
+	text-align: center;
+}
