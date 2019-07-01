@@ -1,0 +1,33 @@
+@font-face {
+	font-family: 'open_sansregular';
+	src: url('./fonts/opensans-regular-webfont.woff2') format('woff2'),
+		 url('./fonts/opensans-regular-webfont.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}
+
+body {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: 'open_sansregular', 'Helvetica', sans-serif;
+	line-height: 1.5;
+}
+
+h1 {
+	color: #373D3F;
+	text-align: center;
+}
+
+a {
+	color: #373D3F;
+	text-decoration: none;
+}
+
+a:hover {
+	color: tomato;
+}
+
+ul {
+	list-style: none;
+}

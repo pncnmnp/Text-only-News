@@ -17,6 +17,6 @@ def display_summary():
 	news = parsed.fetch_news()
 	return render_template('summary.html', 
 							title=title, 
-							summary=news[title]['summary'].replace('\n', '<br>'),
+							summary=news[title]['summary'].split('\n'),
 							link=news[title]['url'],
 							published=news[title]['published'])

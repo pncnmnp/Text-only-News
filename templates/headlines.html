@@ -5,10 +5,12 @@
 		<meta charset="utf-8">
 		<meta name="author" content="parth_parikh">
 		<meta name="description" content="A text-only news website for low internet bandwith">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_styles.css') }}" />
 		<title>Headlines</title>
 	</head>
 
 	<body>
+		<h1>Text-only News</h1>
 		<ul>
 			{% for title in titles %}
 				<li><a href="/summary?title={{ title }}">{{ title }}</a></li>

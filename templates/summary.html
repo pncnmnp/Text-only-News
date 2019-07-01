@@ -5,15 +5,16 @@
 		<meta charset="utf-8">
 		<meta name="author" content="parth_parikh">
 		<meta name="description" content="A text-only news website for low internet bandwith">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_styles.css') }}" />
 		<title>{{ title }}</title>
 	</head>
 
 	<body>
 		<h1>{{ title }}</h1>
 		<p><b>{{ published }}</b></p>
-		{% autoescape false %}
-		<p>{{ summary }}</p>
-		{% endautoescape %}
+		{% for line in summary %}
+			<p>{{ line }}</p>
+		{% endfor %}
 		<p>To read more visit: <a href='{{ link }}'>{{ link }}</a></p>
 	</body>
 </html>

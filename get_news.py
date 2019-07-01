@@ -59,3 +59,8 @@ class ParseNews():
 
 		conn.close()
 		return news_json
+
+if __name__ == '__main__':
+	parse = ParseNews()
+	parse.get_news()
+	parse.store_news()
