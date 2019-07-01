@@ -7,6 +7,7 @@
 		<meta name="description" content="A text-only news website for low internet bandwith">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_styles.css') }}" />
+		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
 		<title>Text-only News | Headlines</title>
 	</head>
 
@@ -17,6 +18,7 @@
 				<li><a href="/summary?title={{ title }}">{{ title }}</a></li>
 			{% endfor %}
 		</ul>
-		<p class="disclaimer">The news is rendered using RSS feeds provided by <a href="https://in.reuters.com/tools/rss">Reuters</a> and <a href="https://www.ndtv.com/rss">NDTV</a>. This site is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. While the site design is licensed under MIT License, the news content is a copyright property of the respective news platform. The code for the site is available on <a href="https://github.com/pncnmnp/Text-only-News">Github</a>. Created by <b>Parth Parikh</b></p>
+		<p class="disclaimer">The news is rendered using RSS feeds provided by <a href="https://in.reuters.com/tools/rss">Reuters</a> and <a href="https://www.ndtv.com/rss">NDTV</a>. This site is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. While the site design is licensed under MIT License, the news content is a copyright property of the respective news platform. The code for the site is available on <a href="https://github.com/pncnmnp/Text-only-News">Github</a>. Site logo under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a> by <a href="https://www.flaticon.com/authors/designmodo" title="Designmodo">Designmodo</a>.<br> Site created by <b>Parth Parikh</b></p>
+		<div></div>
 	</body>
 </html>
