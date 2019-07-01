@@ -6,7 +6,7 @@
 		<meta name="author" content="parth_parikh">
 		<meta name="description" content="A text-only news website for low internet bandwith">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_styles.css') }}" />
-		<title>Headlines</title>
+		<title>Text-only News | Headlines</title>
 	</head>
 
 	<body>
@@ -16,5 +16,6 @@
 				<li><a href="/summary?title={{ title }}">{{ title }}</a></li>
 			{% endfor %}
 		</ul>
+		<p class="disclaimer">The news is rendered using RSS feeds provided by <a href="https://in.reuters.com/tools/rss">Reuters</a> and <a href="https://www.ndtv.com/rss">NDTV</a>. This site is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. While the site design is licensed under MIT License, the news content is a copyright property of the respective news platform.</p>
 	</body>
 </html>

@@ -31,3 +31,12 @@ a:hover {
 ul {
 	list-style: none;
 }
+
+.go_back a {
+	font-weight: bold;
+}
+
+.disclaimer {
+	font-size: 12px;
+	background-color: #F5F5F5;
+}
