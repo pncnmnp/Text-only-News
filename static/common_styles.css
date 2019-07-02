@@ -4,6 +4,7 @@
 		 url('./fonts/opensans-regular-webfont.woff') format('woff');
 	font-weight: 400;
 	font-style: normal;
+	font-display: swap;
 }
 
 body {
@@ -68,4 +69,17 @@ ul {
 .lang_type {
 	font-weight: bold;
 	text-decoration: underline;
+}
+
+#date {
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.headline_title {
+	border-bottom: 3px solid;
+	padding-bottom: 10px;
+	margin-left: 30px;
+	margin-right: 30px;
 }
