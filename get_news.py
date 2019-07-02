@@ -2,23 +2,29 @@ from newspaper import Article
 import feedparser
 import json
 import sqlite3
+from time import sleep
 from rm_old_news import rm_news
 
 NEWS_URLS_PATH = './data/urls.json'
 DB_PATH = './data/news.sqlite3'
+
+ARTICLE_CODES = {'english': 'en', 'hindi': 'hi'}
 
 class ParseNews():
 	def __init__(self):
 		self.urls = json.load(open(NEWS_URLS_PATH))
 		self.feeds = dict()
 
-	def get_news(self):
-		for news_url in self.urls:
+	def get_news(self, language):
+		urls_type = self.urls[language]
+
+		for news_url in urls_type:
+			article_no = 20
 			news_feed = feedparser.parse(news_url)
 			for news in news_feed.entries:
 				try:
 					title, url, date = news['title'], news['link'], news['published']
-					article = Article(url)
+					article = Article(url, language=ARTICLE_CODES[language])
 					article.download()
 					article.parse()
 					summary = article.text
@@ -27,29 +33,36 @@ class ParseNews():
 					self.feeds[title]['url'] = url
 					self.feeds[title]['date'] = date
 					self.feeds[title]['summary'] = summary
+					print("DONE: {}".format(news['title']))
 				except:
 					print("FAILED: {}".format(news['title']))
 
-	def store_news(self):
+				if article_no == 0:
+					break
+				else:
+					article_no -= 1
+
+	def store_news(self, language):
 		conn = sqlite3.connect(DB_PATH)
 		c = conn.cursor()
 		c.execute("""CREATE TABLE IF NOT EXISTS News
 						(title text, 
 						 link text, 
 						 published text, 
-						 summary text)""")
+						 summary text,
+						 language text)""")
 
 		for title in self.feeds:
-			c.execute("""INSERT INTO News (title, link, published, summary) VALUES (?, ?, ?, ?)""",
-					(title, self.feeds[title]['url'], self.feeds[title]['date'], self.feeds[title]['summary']))
+			c.execute("""INSERT INTO News (title, link, published, summary, language) VALUES (?, ?, ?, ?, ?)""",
+					(title, self.feeds[title]['url'], self.feeds[title]['date'], self.feeds[title]['summary'], language))
 
 		conn.commit()
 		conn.close()
 
-	def fetch_news(self):
+	def fetch_news(self, language):
 		conn = sqlite3.connect(DB_PATH)
 		c = conn.cursor()
-		news_list = c.execute("""SELECT title, link, published, summary FROM News""").fetchall()
+		news_list = c.execute("""SELECT title, link, published, summary FROM News WHERE language=?""", (language, )).fetchall()
 		news_json = dict()
 
 		for news in news_list:
@@ -62,7 +75,9 @@ class ParseNews():
 		return news_json
 
 if __name__ == '__main__':
-	parse = ParseNews()
-	rm_news(DB_PATH)
-	parse.get_news()
-	parse.store_news()
+	langs = ['hindi', 'english']
+
+	for language in langs:
+		parse = ParseNews()
+		parse.get_news(language)
+		parse.store_news(language)

@@ -58,3 +58,13 @@ ul {
 	padding-right: 10px;
 	overflow-wrap: break-word;
 }
+
+.languages {
+	text-align: center;
+	font-size: 14px;
+}
+
+.lang_type {
+	font-weight: bold;
+	text-decoration: underline;
+}

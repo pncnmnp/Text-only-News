@@ -1,4 +1,10 @@
-[
-	"https://feeds.feedburner.com/ndtvnews-top-stories",
-	"http://feeds.reuters.com/reuters/INtopNews"
-]
+{
+	"english": [
+		"https://feeds.feedburner.com/ndtvnews-top-stories",
+		"http://feeds.reuters.com/reuters/INtopNews"
+	],
+
+	"hindi": [
+		"https://www.bhaskar.com/rss-feed/2322/"
+	]
+}

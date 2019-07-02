@@ -2,20 +2,32 @@ from flask import Flask, render_template, request
 import get_news
 from urllib.parse import urlparse
 
+DEFAULT = 'english'
+
 app = Flask(__name__)
 parsed = get_news.ParseNews()
 
 @app.route('/')
+@app.route('/english')
 def display_headlines():
-	news = parsed.fetch_news()
+	news = parsed.fetch_news(DEFAULT)
 	titles = list(news.keys())
 
-	return render_template('headlines.html', titles=titles)
+	return render_template('headlines.html', titles=titles, lang=DEFAULT)
+
+@app.route('/hindi')
+def display_headlines_hindi():
+	lang = 'hindi'
+	news = parsed.fetch_news(lang)
+	titles = list(news.keys())
+
+	return render_template('headlines.html', titles=titles, lang=lang)
 
 @app.route('/summary', methods=['GET'])
 def display_summary():
 	title = request.args['title']
-	news = parsed.fetch_news()
+	lang = request.args['language']
+	news = parsed.fetch_news(lang)
 	exception = str()
 	try:
 		site_name = urlparse(news[title]['url']).hostname.replace('feeds.', '')
@@ -24,7 +36,8 @@ def display_summary():
 							summary=news[title]['summary'].split('\n'),
 							link=news[title]['url'],
 							published=news[title]['published'],
-							site_name=site_name)
+							site_name=site_name,
+							lang=lang)
 	except:
 		exception = 'The summary for the following title does not exist!'
 		return render_template('error.html',
