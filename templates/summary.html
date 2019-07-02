@@ -20,7 +20,7 @@
 				<p>{{ line }}</p>
 			{% endfor %}
 			<p><b>To read more visit:</b> <a href='{{ link }}'>{{ link }}</a></p>
-			<p class="go_back"><a href="/">Go to Homepage</a></p>
+			<p class="go_back"><a href="/{{ lang }}">Go to Homepage</a></p>
 		</div>	
 		<p class="disclaimer">The news is rendered from <a href="{{ ''.join(['https://', site_name]) }}">{{ site_name }}</a>. This site is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. While the site design is licensed under MIT License, the news content is a copyright property of <a href="{{ ''.join(['https://', site_name]) }}">{{ site_name }}</a>. The code for the site is available on <a href="https://github.com/pncnmnp/Text-only-News">Github</a>. Site logo under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a> by <a href="https://www.flaticon.com/authors/designmodo" title="Designmodo">Designmodo</a>. <br>Site created by <b>Parth Parikh</b></p>
 	</body>
