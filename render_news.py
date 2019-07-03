@@ -7,20 +7,35 @@ DEFAULT = 'english'
 app = Flask(__name__)
 parsed = get_news.ParseNews()
 
-@app.route('/')
-@app.route('/english')
+def get_titles(language, search_query):
+	news = parsed.fetch_news(language)
+	# Searching query in titles
+	titles = [title for title in list(news.keys()) 
+	                    if title.lower().find(search_query.lower()) >= 0]
+
+	# searching query in summaries of each titles
+	titles += [title for title in list(news.keys()) 
+	                    if news[title]['summary'].lower().find(search_query.lower()) >= 0]
+	return list(set(titles))
+
+@app.route('/', methods=['GET'])
+@app.route('/english', methods=['GET'])
 def display_headlines():
 	news = parsed.fetch_news(DEFAULT)
-	titles = list(news.keys())
-
+	try:
+		titles = get_titles(DEFAULT, request.args['search'])
+	except:
+		titles = list(news.keys())
 	return render_template('headlines.html', titles=titles, lang=DEFAULT)
 
-@app.route('/hindi')
+@app.route('/hindi', methods=['GET'])
 def display_headlines_hindi():
 	lang = 'hindi'
 	news = parsed.fetch_news(lang)
-	titles = list(news.keys())
-
+	try:
+		titles = get_titles(lang, request.args['search'])
+	except:                    
+		titles = list(news.keys())
 	return render_template('headlines.html', titles=titles, lang=lang)
 
 @app.route('/summary', methods=['GET'])
