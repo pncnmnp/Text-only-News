@@ -1,10 +1,17 @@
 {
-	"english": [
-		"https://feeds.feedburner.com/ndtvnews-top-stories",
-		"http://feeds.reuters.com/reuters/INtopNews"
-	],
+	"english": {
+		"trending": ["https://feeds.feedburner.com/ndtvnews-top-stories", 
+					"http://feeds.reuters.com/reuters/INtopNews"], 
+		"technology": ["http://feeds.reuters.com/reuters/INtechnologyNews"], 
+		"international": ["http://feeds.reuters.com/reuters/INworldNews"], 
+		"sports": ["http://feeds.reuters.com/reuters/INsportsNews"], 
+		"national": ["https://feeds.feedburner.com/ndtvnews-india-news"]
+	},
 
-	"hindi": [
-		"https://www.bhaskar.com/rss-feed/2322/"
-	]
+	"hindi": {
+		"international": ["https://www.bhaskar.com/rss-feed/2338/"], 
+		"trending": ["https://www.bhaskar.com/rss-feed/2322/"], 
+		"sports": ["https://www.bhaskar.com/rss-feed/1053/"], 
+		"technology": ["https://www.bhaskar.com/rss-feed/5707/"]
+	}
 }

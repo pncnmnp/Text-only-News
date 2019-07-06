@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import get_news
 from urllib.parse import urlparse
 
 DEFAULT = 'english'
+LANG_SUPPORTED = [DEFAULT, 'hindi']
 
 app = Flask(__name__)
 parsed = get_news.ParseNews()
@@ -19,24 +20,28 @@ def get_titles(language, search_query):
 	return list(set(titles))
 
 @app.route('/', methods=['GET'])
-@app.route('/english', methods=['GET'])
-def display_headlines():
-	news = parsed.fetch_news(DEFAULT)
-	try:
-		titles = get_titles(DEFAULT, request.args['search'])
-	except:
-		titles = list(news.keys())
-	return render_template('headlines.html', titles=titles, lang=DEFAULT)
+def index():
+	return redirect("/english")
 
-@app.route('/hindi', methods=['GET'])
-def display_headlines_hindi():
-	lang = 'hindi'
-	news = parsed.fetch_news(lang)
-	try:
-		titles = get_titles(lang, request.args['search'])
-	except:                    
-		titles = list(news.keys())
-	return render_template('headlines.html', titles=titles, lang=lang)
+@app.route('/<lang>', methods=['GET'])
+def display_headlines(lang):
+	if lang in LANG_SUPPORTED:
+		news = parsed.fetch_news(lang)
+		try:
+			titles = get_titles(lang, request.args['search'])
+		except:
+			titles = list(news.keys())
+		return render_template('headlines.html', titles=titles, lang=lang)
+
+@app.route('/<lang>/<category>')
+def display_category(lang, category):
+	if lang in LANG_SUPPORTED:
+		news = parsed.fetch_news(lang)
+		titles = list()
+		for article in news:
+			if news[article]['category'] == category:
+				titles.append(article)
+		return render_template('headlines.html', titles=titles, lang=lang)	
 
 @app.route('/summary', methods=['GET'])
 def display_summary():

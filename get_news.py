@@ -17,30 +17,34 @@ class ParseNews():
 
 	def get_news(self, language):
 		urls_type = self.urls[language]
+		topics = list(urls_type.keys())
 
-		for news_url in urls_type:
-			article_no = 20
-			news_feed = feedparser.parse(news_url)
-			for news in news_feed.entries:
-				try:
-					title, url, date = news['title'], news['link'], news['published']
-					article = Article(url, language=ARTICLE_CODES[language])
-					article.download()
-					article.parse()
-					summary = article.text
+		for topic in topics:
+			for news_url in urls_type[topic]:
+				article_no = 10
+				print(news_url)
+				news_feed = feedparser.parse(news_url)
+				for news in news_feed.entries:
+					try:
+						title, url, date = news['title'], news['link'], news['published']
+						article = Article(url, language=ARTICLE_CODES[language])
+						article.download()
+						article.parse()
+						summary = article.text
 
-					self.feeds[title] = dict()
-					self.feeds[title]['url'] = url
-					self.feeds[title]['date'] = date
-					self.feeds[title]['summary'] = summary
-					print("DONE: {}".format(news['title']))
-				except:
-					print("FAILED: {}".format(news['title']))
+						self.feeds[title] = dict()
+						self.feeds[title]['url'] = url
+						self.feeds[title]['date'] = date
+						self.feeds[title]['summary'] = summary
+						self.feeds[title]['category'] = topic
+						print("DONE: {}, {}".format(news['title'], topic))
+					except:
+						print("FAILED: {}".format(news['title']))
 
-				if article_no == 0:
-					break
-				else:
-					article_no -= 1
+					if article_no == 0:
+						break
+					else:
+						article_no -= 1
 
 	def store_news(self, language):
 		conn = sqlite3.connect(DB_PATH)
@@ -50,19 +54,29 @@ class ParseNews():
 						 link text, 
 						 published text, 
 						 summary text,
+						 category text,
 						 language text)""")
 
 		for title in self.feeds:
-			c.execute("""INSERT INTO News (title, link, published, summary, language) VALUES (?, ?, ?, ?, ?)""",
-					(title, self.feeds[title]['url'], self.feeds[title]['date'], self.feeds[title]['summary'], language))
-
+			c.execute("""INSERT INTO News (title, 
+											link, 
+											published, 
+											summary, 
+											category, 
+											language) VALUES (?, ?, ?, ?, ?, ?)""",
+						(title, 
+						self.feeds[title]['url'], 
+						self.feeds[title]['date'], 
+						self.feeds[title]['summary'], 
+						self.feeds[title]['category'], 
+						language))
 		conn.commit()
 		conn.close()
 
 	def fetch_news(self, language):
 		conn = sqlite3.connect(DB_PATH)
 		c = conn.cursor()
-		news_list = c.execute("""SELECT title, link, published, summary FROM News WHERE language=?""", (language, )).fetchall()
+		news_list = c.execute("""SELECT title, link, published, summary, category FROM News WHERE language=?""", (language, )).fetchall()
 		news_json = dict()
 
 		for news in news_list:
@@ -70,12 +84,13 @@ class ParseNews():
 			news_json[news[0]]['url'] = news[1]
 			news_json[news[0]]['published'] = news[2]
 			news_json[news[0]]['summary'] = news[3]
+			news_json[news[0]]['category'] = news[4]
 
 		conn.close()
 		return news_json
 
 if __name__ == '__main__':
-	langs = ['hindi', 'english']
+	langs = ['hindi']
 
 	for language in langs:
 		parse = ParseNews()
