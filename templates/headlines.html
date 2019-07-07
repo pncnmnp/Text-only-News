@@ -15,7 +15,13 @@
 		<h1 class="headline_title">TEXT-ONLY NEWS</h1>
 		<div id="date"></div>
 		<p class="languages">Languages supported: <a class="lang_type" href="/english">ENGLISH</a>, <a class="lang_type" href="/hindi">HINDI</a></p>
-		<p class="news-categories">Categories: <a class="news_type" href="/{{ lang }}/trending">Top</a>, <a class="news_type" href="/{{ lang }}/national">National</a>, <a class="news_type" href="/{{ lang }}/international">World</a>, <a class="news_type" href="/{{ lang }}/sports">Sports</a>, <a class="news_type" href="/{{ lang }}/technology">Tech</a></p>
+
+ 		<p class="news-categories">Categories: 
+ 			{% for category in categories %}
+ 				<a class="news_type" href="/{{ lang }}/{{ category }}">{{ category_map[category] }}</a>  
+ 			{% endfor %}
+ 		</p>
+
 		<ul>
 			{% for title in titles %}
 				<li><a href="/summary?title={{ title }}&language={{ lang }}">{{ title }}</a></li>

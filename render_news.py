@@ -1,9 +1,17 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, abort
 import get_news
 from urllib.parse import urlparse
 
 DEFAULT = 'english'
 LANG_SUPPORTED = [DEFAULT, 'hindi']
+
+CATEGORY_MAP = {
+	'trending': 'Top',
+	'international': 'World',
+	'national': 'National',
+	'sports': 'Sports',
+	'technology': 'Tech'
+}
 
 app = Flask(__name__)
 parsed = get_news.ParseNews()
@@ -27,21 +35,35 @@ def index():
 def display_headlines(lang):
 	if lang in LANG_SUPPORTED:
 		news = parsed.fetch_news(lang)
+		categories = parsed.fetch_categories(lang)
 		try:
 			titles = get_titles(lang, request.args['search'])
 		except:
 			titles = list(news.keys())
-		return render_template('headlines.html', titles=titles, lang=lang)
+		return render_template('headlines.html', 
+			                   titles=titles, 
+			                   lang=lang, 
+			                   categories=categories,
+			                   category_map=CATEGORY_MAP)
+	else:
+		abort(404)
 
 @app.route('/<lang>/<category>')
 def display_category(lang, category):
 	if lang in LANG_SUPPORTED:
 		news = parsed.fetch_news(lang)
+		categories = parsed.fetch_categories(lang)
 		titles = list()
 		for article in news:
 			if news[article]['category'] == category:
 				titles.append(article)
-		return render_template('headlines.html', titles=titles, lang=lang)	
+		return render_template('headlines.html', 
+			                    titles=titles, 
+			                    lang=lang,
+			                    categories=categories,
+			                    category_map=CATEGORY_MAP)
+	else:
+		abort(404)
 
 @app.route('/summary', methods=['GET'])
 def display_summary():
@@ -59,9 +81,7 @@ def display_summary():
 							site_name=site_name,
 							lang=lang)
 	except:
-		exception = 'The summary for the following title does not exist!'
-		return render_template('error.html',
-								exception=exception)
+		abort(404)
 
 @app.errorhandler(404)
 def page_not_found(error):

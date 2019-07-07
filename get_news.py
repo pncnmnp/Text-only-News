@@ -21,7 +21,7 @@ class ParseNews():
 
 		for topic in topics:
 			for news_url in urls_type[topic]:
-				article_no = 10
+				article_no = 20
 				print(news_url)
 				news_feed = feedparser.parse(news_url)
 				for news in news_feed.entries:
@@ -89,8 +89,20 @@ class ParseNews():
 		conn.close()
 		return news_json
 
+	def fetch_categories(self, language):
+		SORT_ORDER = ['trending', 'national', 'international', 'sports', 'technology']
+
+		conn = sqlite3.connect(DB_PATH)
+		c = conn.cursor()
+		categories = set(c.execute("""SELECT category FROM News WHERE language=?""", (language, )).fetchall())
+
+		conn.close()
+		categories = sorted([category[0] for category in categories], 
+		                     key=lambda x: SORT_ORDER.index(x))
+		return categories
+
 if __name__ == '__main__':
-	langs = ['hindi']
+	langs = ['hindi', 'english']
 
 	for language in langs:
 		parse = ParseNews()
