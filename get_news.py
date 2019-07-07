@@ -7,12 +7,14 @@ from rm_old_news import rm_news
 
 NEWS_URLS_PATH = './data/urls.json'
 DB_PATH = './data/news.sqlite3'
+CATEGORIES_ORDER_PATH = './data/categories_order.json'
 
 ARTICLE_CODES = {'english': 'en', 'hindi': 'hi'}
 
 class ParseNews():
 	def __init__(self):
 		self.urls = json.load(open(NEWS_URLS_PATH))
+		self.sort_order = json.load(open(CATEGORIES_ORDER_PATH))
 		self.feeds = dict()
 
 	def get_news(self, language):
@@ -90,15 +92,13 @@ class ParseNews():
 		return news_json
 
 	def fetch_categories(self, language):
-		SORT_ORDER = ['trending', 'national', 'international', 'sports', 'technology']
-
 		conn = sqlite3.connect(DB_PATH)
 		c = conn.cursor()
 		categories = set(c.execute("""SELECT category FROM News WHERE language=?""", (language, )).fetchall())
 
 		conn.close()
 		categories = sorted([category[0] for category in categories], 
-		                     key=lambda x: SORT_ORDER.index(x))
+		                     key=lambda x: self.sort_order.index(x))
 		return categories
 
 if __name__ == '__main__':

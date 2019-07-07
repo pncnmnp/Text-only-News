@@ -10,6 +10,7 @@ Text-only news is a website to provide clutter-free news in various languages. T
 Features of this site are:
 * Low request sizes, fast loading time
 * Search articles with relevant keyword
+* News are segregated into various categories
 * Multilingual, currently supporting - English, Hindi
 * Clean UI
 
