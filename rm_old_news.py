@@ -1,6 +1,14 @@
 import sqlite3
 
 def rm_news(DB_PATH):
+	'''
+    Parameters : 'DB_PATH' = 'string' type containing the path of
+                              SQlite DB to be filtered.
+    
+    Returns: Does not return anything, 
+    
+    Filters the entire News database to accommodate latest news.
+	'''
 	try:
 		conn = sqlite3.connect(DB_PATH)
 		c = conn.cursor()
