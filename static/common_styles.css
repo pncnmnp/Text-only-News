@@ -104,6 +104,10 @@ li {
 	cursor: pointer;
 }
 
+.search-label {
+	font-size: 14px;
+}
+
 .headline_title {
 	border-bottom: 3px solid;
 	padding-bottom: 10px;

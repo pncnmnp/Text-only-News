@@ -27,6 +27,10 @@ def get_titles(language, search_query):
 	                    if news[title]['summary'].lower().find(search_query.lower()) >= 0]
 	return list(set(titles))
 
+@app.route('/service-worker.js', methods=["GET"])
+def sw():
+	return app.send_static_file('service-worker.js')
+
 @app.route('/', methods=['GET'])
 def index():
 	return redirect("/english")

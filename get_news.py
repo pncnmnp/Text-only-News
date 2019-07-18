@@ -88,12 +88,7 @@ class ParseNews():
 						 language text)""")
 
 		for title in self.feeds:
-			c.execute("""INSERT INTO News (title, 
-											link, 
-											published, 
-											summary, 
-											category, 
-											language) VALUES (?, ?, ?, ?, ?, ?)""",
+			c.execute("""INSERT INTO News (title, link, published, summary, category, language) VALUES (?, ?, ?, ?, ?, ?)""",
 						(title, 
 						self.feeds[title]['url'], 
 						self.feeds[title]['date'], 

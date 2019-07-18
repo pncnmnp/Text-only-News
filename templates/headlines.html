@@ -6,8 +6,10 @@
 		<meta name="author" content="parth_parikh">
 		<meta name="description" content="A text-only news website for low internet bandwidth">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="theme-color" content="black">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_styles.css') }}" />
 		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+		<link rel='manifest' href="{{ url_for('static', filename='manifest.json') }}">
 		<title>Text-only News | Headlines</title>
 	</head>
 
@@ -16,11 +18,11 @@
 		<div id="date"></div>
 		<p class="languages">Languages supported: <a class="lang_type" href="/english">ENGLISH</a>, <a class="lang_type" href="/hindi">HINDI</a></p>
 
- 		<p class="news-categories">Categories: 
- 			{% for category in categories %}
- 				<a class="news_type" href="/{{ lang }}/{{ category }}">{{ category_map[category] }}</a>{{ "," if not loop.last }}  
- 			{% endfor %}
- 		</p>
+		<p class="news-categories">Categories: 
+			{% for category in categories %}
+				<a class="news_type" href="/{{ lang }}/{{ category }}">{{ category_map[category] }}</a>{{ "," if not loop.last }}  
+			{% endfor %}
+		</p>
 
 		<ul>
 			{% for title in titles %}
@@ -29,8 +31,11 @@
 		</ul>
 		<div class="search-div">
 			<form action="" method="get">
-				<input type="text" id="search" name="search"> 
-				<input type="submit" class="search-button" value="Search">
+				<label class="search-label">Search a keyword from the news collection
+					<br>
+					<input type="text" id="search" name="search">
+				</label>
+				<button class="search-button">Search</button>
 			</form>
 		</div>
 		<p class="disclaimer">The news is rendered using RSS feeds provided by <a href="https://in.reuters.com/tools/rss">Reuters</a>, <a href="https://www.ndtv.com/rss">NDTV</a> and <a href="https://www.bhaskar.com/">Dainik Bhaskar</a>. This site is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. While the site design is licensed under MIT License, the news content is a copyright property of the respective news platform. The code for the site is available on <a href="https://github.com/pncnmnp/Text-only-News">Github</a>. Site logo under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a> by <a href="https://www.flaticon.com/authors/designmodo" title="Designmodo">Designmodo</a>.<br> Site created by <b>Parth Parikh</b></p>
@@ -39,6 +44,19 @@
 			var date = new Date().toString().slice(0, 15);
 			var element = document.getElementById("date");
 			element.appendChild(document.createTextNode(date));
+		</script>
+		<script>
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('../service-worker.js')
+						.then(reg => {
+							console.log('Service worker registered! 😎', reg);
+						})
+						.catch(err => {
+							console.log('😥 Service worker registration failed: ', err);
+						});
+				});
+			}
 		</script>
 	</body>
 </html>
