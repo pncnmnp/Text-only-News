@@ -23,6 +23,9 @@
 				<a class="news_type" href="/{{ lang }}/{{ category }}">{{ category_map[category] }}</a>{{ "," if not loop.last }}  
 			{% endfor %}
 		</p>
+		{% if curr_category %}
+		<p class="curr-news"><u>{{ curr_category }}</u><a href="#search"><img class="search-icon" src="{{ url_for('static', filename='search.svg') }}"></a></p>
+		{% endif %}
 
 		<ul>
 			{% for title in titles %}

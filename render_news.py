@@ -65,7 +65,8 @@ def display_category(lang, category):
 			                    titles=titles, 
 			                    lang=lang,
 			                    categories=categories,
-			                    category_map=CATEGORY_MAP)
+			                    category_map=CATEGORY_MAP,
+			                    curr_category=category.upper())
 	else:
 		abort(404)
 

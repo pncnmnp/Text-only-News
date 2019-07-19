@@ -20,39 +20,12 @@ self.addEventListener('activate', event => {
 });
 
 // The below event listener is from 
-// https://serviceworke.rs/strategy-cache-update-and-refresh_service-worker_doc.html
+// https://developers.google.com/web/ilt/pwa/caching-files-with-service-worker
 
 self.addEventListener('fetch', function(event) {
-	console.log('Fetch intercepted for:', event.request.url);
-	event.respondWith(fromCache(event.request));
-	event.waitUntil(update(event.request).then(refresh));
+	event.respondWith(
+		fetch(event.request).catch(function() {
+			return caches.match(event.request);
+		})
+	);
 });
-
-function fromCache(request) {
-	return caches.open(cacheName).then(function (cache) {
-		return cache.match(request);
-	});
-}
-
-function update(request) {
-	return caches.open(cacheName).then(function (cache) {
-		return fetch(request).then(function (response) {
-			return cache.put(request, response.clone()).then(function () {
-				return response;
-			});
-		});
-	});
-}
-
-function refresh(response) {
-	return self.clients.matchAll().then(function (clients) {
-		clients.forEach(function (client) {
-			var message = {
-				type: 'refresh',
-				url: response.url,
-				eTag: response.headers.get('ETag')
-			};
-			client.postMessage(JSON.stringify(message));
-		});
-	});
-}
