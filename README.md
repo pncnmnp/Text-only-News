@@ -6,10 +6,11 @@
 </p>
 
 ### Description
-Text-only news is a website to provide clutter-free news in various languages. This is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. With low request sizes and fast loading time, the site is perfect for low bandwidth connections.<br/>
+Text-only news is a website/progressive-web-app to provide clutter-free news in various languages. This is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. With low request sizes and fast loading time, the site is perfect for low bandwidth connections.<br/>
 Features of this site are:
 * Low request sizes, fast loading time
 * Search articles with relevant keyword
+* Can be used as a Progressive Web App (PWA)
 * News are segregated into various categories
 * Multilingual, currently supporting - English, Hindi
 * Clean UI
