@@ -43,11 +43,7 @@
 		</div>
 		<p class="disclaimer">The news is rendered using RSS feeds provided by <a href="https://in.reuters.com/tools/rss">Reuters</a>, <a href="https://www.ndtv.com/rss">NDTV</a> and <a href="https://www.bhaskar.com/">Dainik Bhaskar</a>. This site is a non-commercial attempt to provide news in places with slow-internet connectivity especially in rural areas. While the site design is licensed under MIT License, the news content is a copyright property of the respective news platform. The code for the site is available on <a href="https://github.com/pncnmnp/Text-only-News">Github</a>. Site logo under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a> by <a href="https://www.flaticon.com/authors/designmodo" title="Designmodo">Designmodo</a>.<br> Site created by <b>Parth Parikh</b></p>
 		<div></div>
-		<script type="text/javascript" async="async">
-			var date = new Date().toString().slice(0, 15);
-			var element = document.getElementById("date");
-			element.appendChild(document.createTextNode(date));
-		</script>
+		<script type="text/javascript" async="async" src="{{ url_for('static', filename='js/fetch_date.js') }}"></script>
 		<script>
 			if ('serviceWorker' in navigator) {
 				window.addEventListener('load', function() {
