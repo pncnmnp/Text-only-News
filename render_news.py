@@ -97,3 +97,11 @@ def page_not_found(error):
 def internal_server(error):
 	exception = 'Error 500: There is a problem with our server. Please try again!'
 	return render_template('error.html', exception=exception), 500
+
+@app.after_request
+def apply_caching(response):
+	response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+	response.headers['X-Content-Type-Options'] = 'nosniff'
+	response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+	response.headers['X-XSS-Protection'] = '1; mode=block'
+	return response
