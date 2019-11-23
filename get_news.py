@@ -1,13 +1,45 @@
-from newspaper import Article
+from newspaper import fulltext
 import feedparser
 import json
 import sqlite3
+import sys
+
+import scrapy
+from scrapy.crawler import CrawlerProcess
 
 NEWS_URLS_PATH = './data/urls.json'
 DB_PATH = './data/news.sqlite3'
 CATEGORIES_ORDER_PATH = './data/categories_order.json'
 
 ARTICLE_CODES = {'english': 'en', 'hindi': 'hi'}
+
+fetched = dict()
+
+def start_scrapy(urls):
+	process = CrawlerProcess(settings={
+		'FEED_FORMAT': 'json',
+		'FEED_URI': 'items.json'
+	})
+
+	process.crawl(Fetch, kwargs={"url": urls})
+	process.start()
+
+class Fetch(scrapy.Spider):
+	def __init__(self, **kwargs):
+		self.url = kwargs["kwargs"]["url"]
+
+	def start_requests(self):
+		urls = self.url
+
+		for url in urls:
+			yield scrapy.Request(url=url, callback=self.parse)
+
+	def parse(self, response):
+		page = response.text
+		try:
+			fetched[response.request.meta['redirect_urls'][0]] = page
+		except:
+			fetched[response.url] = page
 
 class ParseNews():
 	def __init__(self):
@@ -38,27 +70,52 @@ class ParseNews():
 		urls_type = self.urls[language]
 		topics = list(urls_type.keys())
 
+		all_links = list()
+		fetched_feed = dict()
+		LIMIT = 20
+
 		for topic in topics:
 			for news_url in urls_type[topic]:
-				article_no = 20
-				print(news_url)
 				news_feed = feedparser.parse(news_url)
-				for news in news_feed.entries:
+
+				print("FETCHED FEED: " + str(news_url))
+
+				titles = [news["title"] for news in news_feed.entries][:LIMIT]
+				urls = [news["link"] for news in news_feed.entries][:LIMIT]
+				publishes = [news["published"] for news in news_feed.entries][:LIMIT]
+
+				all_links += urls
+				fetched_feed[news_url] = dict()
+				fetched_feed[news_url]["title"] = titles
+				fetched_feed[news_url]["url"] = urls
+				fetched_feed[news_url]["published"] = publishes
+				fetched_feed[news_url]["topic"] = topic
+
+		start_scrapy(all_links)
+
+		for topic in topics:
+			for news_url in urls_type[topic]:
+				article_no = LIMIT
+				# print(news_url)
+				# news_feed = feedparser.parse(news_url)
+				# all_links = [news['link'] for news in news_feed.entries]
+				# start_scrapy(all_links)
+				len_articles = len(fetched_feed[news_url]["title"])
+
+				for index in range(len_articles):
 					try:
-						title, url, date = news['title'], news['link'], news['published']
-						article = Article(url, language=ARTICLE_CODES[language])
-						article.download()
-						article.parse()
-						summary = article.text
+						title, url, date = fetched_feed[news_url]["title"][index], fetched_feed[news_url]["url"][index], fetched_feed[news_url]["published"][index]
+						html = fetched[url]
+						summary = fulltext(html, language=ARTICLE_CODES[language])
 
 						self.feeds[title] = dict()
 						self.feeds[title]['url'] = url
 						self.feeds[title]['date'] = date
 						self.feeds[title]['summary'] = summary
 						self.feeds[title]['category'] = topic
-						print("DONE: {}, {}".format(news['title'], topic))
+						print("DONE: {}, {}".format(title, topic))
 					except:
-						print("FAILED: {}".format(news['title']))
+						print("FAILED: {}".format(title))
 
 					if article_no == 0:
 						break
@@ -156,9 +213,8 @@ class ParseNews():
 		return categories
 
 if __name__ == '__main__':
-	langs = ['hindi', 'english']
+	language = sys.argv[1]
 
-	for language in langs:
-		parse = ParseNews()
-		parse.get_news(language)
-		parse.store_news(language)
+	parse = ParseNews()
+	parse.get_news(language)
+	parse.store_news(language)

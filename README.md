@@ -17,5 +17,21 @@ Features of this site are:
 
 The site is currently hosted on [PythonAnywhere](https://pythonanywhere.com): [Text-Only News](https://textnews.pythonanywhere.com)
 
+### How to run (Locally)
+Enter the urls you want to scrape in `./data/urls.json` with appropriate `language` and `categories`. The format for the same is:
+`{
+	'language_1': {'category_1': ['link_1', 'link_2', ...],
+                   'category_2': ['link_1', 'link_2', ...]},
+    'language_2': {...}
+ }`
+
+If you add any categories in `./data/urls.json`, make sure to list them in `./data/categories_order.json`
+
+To fetch the news and store them locally in `./data/news.sqlite3`, run:
+`python get_news.py language`
+where `language` is a string, whose value should be from `language_1, language_2, ...` (from `./data/urls.json`)
+
+By default, values are appended at the end of the database. To truncate the DB, run `rm_old_news.py`.
+
 ### License
 This project is under MIT License. The news content is a copyright property of the respective news platform. Currently news is rendered from RSS feeds provided by [Reuters](https://in.reuters.com/tools/rss), [NDTV](https://www.ndtv.com/rss) and [Dainik Bhaskar](https://www.bhaskar.com/). The site logo is under [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/) by [Designmodo](https://www.flaticon.com/authors/designmodo).
